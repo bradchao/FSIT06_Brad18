@@ -11,7 +11,9 @@ import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 
 import org.json.JSONArray;
@@ -98,6 +100,35 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void test4(View view) {
+        String url = "http://data.coa.gov.tw/Service/OpenData/ODwsv/ODwsvTravelFood.aspx";
+        JsonArrayRequest request = new JsonArrayRequest(
+                url,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        parseJSON2(response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.v("brad", error.toString());
+                    }
+                }
+        );
+        mainApp.queue.add(request);
+    }
+
+    private void parseJSON2(JSONArray root){
+        try{
+            for (int i=0; i<root.length(); i++){
+                JSONObject row = root.getJSONObject(i);
+                Log.v("brad", row.getString("Name") +
+                        ":" +row.getString("Tel"));
+            }
+        }catch (Exception e){
+
+        }
     }
 
 }
