@@ -3,12 +3,17 @@ package tw.org.iii.appps.brad18;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Page2Activity extends AppCompatActivity {
     private MainApp mainApp;
@@ -34,11 +39,21 @@ public class Page2Activity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-
+                        Log.v("brad", response);
                     }
                 },
                 null
-        );
+        ){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("cname", cname.getText().toString());
+                params.put("tel", tel.getText().toString());
+                params.put("addr", addr.getText().toString());
+
+                return params;
+            }
+        };
         mainApp.queue.add(request);
 
     }
