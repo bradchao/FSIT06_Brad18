@@ -5,13 +5,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 public class MainActivity extends AppCompatActivity {
     private MainApp mainApp;
+    private TextView tv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
         mainApp = (MainApp) getApplication();
 
+        tv = findViewById(R.id.tv);
     }
 
     public void test1(View view) {
@@ -30,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         Log.v("brad", response);
+                        tv.setText(response);
                     }
                 },
                 null
@@ -38,9 +45,36 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     public void test2(View view) {
+        String url = "http://data.coa.gov.tw/Service/OpenData/ODwsv/ODwsvTravelFood.aspx";
+
+        StringRequest request = new StringRequest(
+                Request.Method.GET,
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        parseJSON(response);
+                    }
+                },
+                null
+        );
+        mainApp.queue.add(request);
     }
+
+    private void parseJSON(String json){
+        try{
+            JSONArray root = new JSONArray(json);
+            for (int i=0; i<root.length(); i++){
+                JSONObject row = root.getJSONObject(i);
+                Log.v("brad", row.getString("Name") +
+                        ":" +row.getString("Tel"));
+            }
+        }catch (Exception e){
+            Log.v("brad", e.toString());
+        }
+    }
+
 
     public void test3(View view) {
     }
