@@ -133,26 +133,5 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private class MyInputStreamRequest extends Request<byte[]>{
-        private final Response.Listener<byte[]> listener;
-
-        public MyInputStreamRequest(int method, String url,
-                                    Response.Listener<byte[]> listen,
-                                    @Nullable Response.ErrorListener listener) {
-            super(method, url, listener);
-            this.listener = listen;
-        }
-
-        @Override
-        protected Response<byte[]> parseNetworkResponse(NetworkResponse response) {
-            return null;
-        }
-
-        @Override
-        protected void deliverResponse(byte[] response) {
-            listener.onResponse(response);
-        }
-    }
-
 
 }
