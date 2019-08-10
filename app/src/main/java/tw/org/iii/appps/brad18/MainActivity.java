@@ -134,4 +134,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public void test5(View view) {
+        BradInputStreamRequest request = new BradInputStreamRequest(
+                Request.Method.GET,
+                "https://ezgo.coa.gov.tw/Uploads/opendata/TainmaMain01/APPLY_D/20151007173924.jpg",
+                new Response.Listener<byte[]>() {
+                    @Override
+                    public void onResponse(byte[] response) {
+                        Log.v("brad", "len = " + response.length);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.v("brad", error.toString());
+                    }
+                },
+                null
+        );
+        mainApp.queue.add(request);
+    }
 }

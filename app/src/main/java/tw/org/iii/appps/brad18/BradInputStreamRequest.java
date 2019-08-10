@@ -9,15 +9,15 @@ import com.android.volley.toolbox.HttpHeaderParser;
 
 import java.util.Map;
 
-public class BradInputStream extends Request<byte[]> {
+public class BradInputStreamRequest extends Request<byte[]> {
     private final Response.Listener<byte[]> listener;
     private Map<String,String> responseHeaders;
     private Map<String,String> params;
 
-    public BradInputStream(int method, String url,
-                                Response.Listener<byte[]> listen,
-                                @Nullable Response.ErrorListener listener,
-                                Map<String,String> params) {
+    public BradInputStreamRequest(int method, String url,
+                                  Response.Listener<byte[]> listen,
+                                  @Nullable Response.ErrorListener listener,
+                                  Map<String,String> params) {
         super(method, url, listener);
         this.listener = listen;
         this.params = params;
