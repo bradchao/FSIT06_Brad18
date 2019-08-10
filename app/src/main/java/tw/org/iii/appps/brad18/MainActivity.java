@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -27,7 +28,9 @@ import com.android.volley.toolbox.StringRequest;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 
 public class MainActivity extends AppCompatActivity {
     private MainApp mainApp;
@@ -189,7 +192,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void saveSDCard(byte[] data){
-        
+        File saveFile =  new File(sdcard, "Download/brad.jpg");
+        try {
+            BufferedOutputStream bout =
+                    new BufferedOutputStream(new FileOutputStream(saveFile));
+            bout.write(data);
+            bout.flush();
+            bout.close();
+            Toast.makeText(this, "Save OK", Toast.LENGTH_SHORT).show();
+        }catch (Exception e){
+            Log.v("brad", e.toString());
+        }
     }
 
 }
