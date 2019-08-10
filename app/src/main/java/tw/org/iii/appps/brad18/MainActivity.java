@@ -7,6 +7,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -172,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
         if (!isWriteSDCard) return;
         BradInputStreamRequest request = new BradInputStreamRequest(
                 Request.Method.GET,
-                "https://ezgo.coa.gov.tw/Uploads/opendata/TainmaMain01/APPLY_D/20151007173924.jpg",
+                "https://pdfmyurl.com/?url=https://www.pchome.com.tw",
                 new Response.Listener<byte[]>() {
                     @Override
                     public void onResponse(byte[] response) {
@@ -183,16 +185,22 @@ public class MainActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.v("brad", error.toString());
+                        Log.v("brad", "e:" + error.toString());
                     }
                 },
                 null
         );
+
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                20*1000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
         mainApp.queue.add(request);
     }
 
     private void saveSDCard(byte[] data){
-        File saveFile =  new File(sdcard, "Download/brad.jpg");
+        File saveFile =  new File(sdcard, "Download/pchome.pdf");
         try {
             BufferedOutputStream bout =
                     new BufferedOutputStream(new FileOutputStream(saveFile));
@@ -205,4 +213,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void toPage2(View view) {
+        Intent intent = new Intent(this, Page2Activity.class);
+        startActivity(intent);
+    }
 }
