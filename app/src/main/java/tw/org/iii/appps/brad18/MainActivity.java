@@ -2,13 +2,16 @@ package tw.org.iii.appps.brad18;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.StringRequest;
 
 import org.json.JSONArray;
@@ -17,6 +20,7 @@ import org.json.JSONObject;
 public class MainActivity extends AppCompatActivity {
     private MainApp mainApp;
     private TextView tv;
+    private ImageView img;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         mainApp = (MainApp) getApplication();
 
         tv = findViewById(R.id.tv);
+        img = findViewById(R.id.img);
     }
 
     public void test1(View view) {
@@ -77,6 +82,19 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void test3(View view) {
+        ImageRequest request = new ImageRequest(
+                "https://ezgo.coa.gov.tw/Uploads/opendata/TainmaMain01/APPLY_D/20151007173924.jpg",
+                new Response.Listener<Bitmap>() {
+                    @Override
+                    public void onResponse(Bitmap response) {
+                        img.setImageBitmap(response);
+                    }
+                },
+                0, 0,
+                Bitmap.Config.ARGB_8888,
+                null
+        );
+        mainApp.queue.add(request);
     }
 
     public void test4(View view) {
